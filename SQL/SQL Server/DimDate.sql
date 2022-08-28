@@ -2,57 +2,57 @@
 --    EXEC ('CREATE SCHEMA [dim]');
 --GO
 
---IF EXISTS
---(
---    SELECT *
---    FROM sys.objects
---    WHERE object_id = OBJECT_ID(N'[dim].[Dates]')
---          AND type IN ( N'U' )
---)
---    DROP TABLE [dim].[Dates];
---GO
+IF EXISTS
+(
+    SELECT *
+    FROM sys.objects
+    WHERE object_id = OBJECT_ID(N'[dim].[Dates]')
+          AND type IN ( N'U' )
+)
+    DROP TABLE [dim].[Dates];
+GO
 
---SET ANSI_NULLS ON;
---GO
+SET ANSI_NULLS ON;
+GO
 
---SET QUOTED_IDENTIFIER ON;
---GO
+SET QUOTED_IDENTIFIER ON;
+GO
 
---CREATE TABLE [dim].[Dates]
---(
---    [SK_Date] [INT],
---    [Date] [DATE] NULL,
---    [Day] [INT] NULL,
---    [DayName] [NVARCHAR](30) NULL,
---    [Week] [INT] NULL,
---    [ISOWeek] [INT] NULL,
---    [WeekInMonth] [TINYINT] NULL,
---    [DayOfWeek] [INT] NULL,
---    [Month] [INT] NULL,
---    [MonthName] [NVARCHAR](30) NULL,
---    [Quarter] [INT] NULL,
---    [FirstOfQuarter] [DATE] NULL,
---    [LastOfQuarter] [DATE] NULL,
---    [Year] [INT] NULL,
---    [YearWeek] [INT] NULL,
---    [ISOYearWeek] [INT] NULL,
---    [FirstOfMonth] [DATE] NULL,
---    [LastOfMonth] [DATE] NULL,
---    [FirstOfYear] [DATE] NULL,
---    [LastOfYear] [DATE] NULL,
---    [DayOfYear] [INT] NULL,
---    [IsAfterToday] [INT] NOT NULL,
---    [IsWeekend] [INT] NOT NULL,
---    [IsLeapYear] [INT] NULL,
---    [Has53Weeks] [INT] NOT NULL,
---    [Has53ISOWeeks] [INT] NOT NULL
---        CONSTRAINT [PK_DimDates_Date]
---        PRIMARY KEY CLUSTERED ([SK_Date] ASC)
---        WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON,
---              ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF
---             ) ON [PRIMARY]
---) ON [PRIMARY];
---GO
+CREATE TABLE [dim].[Dates]
+(
+    [SK_Date] [INT],
+    [Date] [DATE] NULL,
+    [Day] [INT] NULL,
+    [DayName] [NVARCHAR](30) NULL,
+    [Week] [INT] NULL,
+    [ISOWeek] [INT] NULL,
+    [WeekInMonth] [TINYINT] NULL,
+    [DayOfWeek] [INT] NULL,
+    [Month] [INT] NULL,
+    [MonthName] [NVARCHAR](30) NULL,
+    [Quarter] [INT] NULL,
+    [FirstOfQuarter] [DATE] NULL,
+    [LastOfQuarter] [DATE] NULL,
+    [Year] [INT] NULL,
+    [YearWeek] [INT] NULL,
+    [ISOYearWeek] [INT] NULL,
+    [FirstOfMonth] [DATE] NULL,
+    [LastOfMonth] [DATE] NULL,
+    [FirstOfYear] [DATE] NULL,
+    [LastOfYear] [DATE] NULL,
+    [DayOfYear] [INT] NULL,
+    [IsAfterToday] [INT] NOT NULL,
+    [IsWeekend] [INT] NOT NULL,
+    [IsLeapYear] [INT] NULL,
+    [Has53Weeks] [INT] NOT NULL,
+    [Has53ISOWeeks] [INT] NOT NULL
+        CONSTRAINT [PK_DimDates_Date]
+        PRIMARY KEY CLUSTERED ([SK_Date] ASC)
+        WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON,
+              ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF
+             ) ON [PRIMARY]
+) ON [PRIMARY];
+GO
 
 
 DECLARE @StartDate DATE = '20150101';
@@ -154,7 +154,7 @@ AS (SELECT CoreDates.SK_Date,
                                    0
                            END
     FROM CoreDates)
---INSERT INTO dim.Dates
+INSERT INTO dim.Dates
 SELECT *
 FROM DimDates
 ORDER BY Date
