@@ -7,14 +7,11 @@ GO
 -- Create date: 2022-08-30
 -- Description:	Created an extended date table with relevant date columns. Should be run everyday
 -- =============================================
-DROP PROCEDURE [dbo].[CreateDimDates];
-GO
-
-CREATE PROCEDURE dbo.CreateDimDates
+CREATE OR ALTER PROCEDURE dbo.CreateDimDates
     @StartDate DATE = '2015-01-01',
     @YearsIntoFuture INT = 1,      -- How many years into the future before cut off
-    @Language NVARCHAR = 'Danish', -- English/Danish supported
-	@DefaultLanguage NVARCHAR = 'English', -- Default language for SQL Server
+    @Language NVARCHAR(10) = 'English', -- English/Danish supported see SELECT * FROM sys.syslanguages in a database for all languages
+	@DefaultLanguage NVARCHAR(10) = 'English', -- Default language for SQL Server
     @FirstDayOfTheWeek INT = 1     -- 1 = Monday, 7 = Sunday
 AS
 BEGIN
@@ -23,13 +20,13 @@ BEGIN
     (
         SELECT *
         FROM sys.objects
-        WHERE object_id = OBJECT_ID(N'[dim].[Dates]')
+        WHERE object_id = OBJECT_ID(N'[dbo].[DimDates]')
               AND type IN ( N'U' )
     )
-        DROP TABLE [dim].[Dates];
+        DROP TABLE [dbo].[DimDates];
 
 
-    CREATE TABLE [dim].[Dates]
+    CREATE TABLE [dbo].[DimDates]
     (
         [SK_Date] [INT],
         [Date] [DATE] NULL,
@@ -229,7 +226,7 @@ BEGIN
                        0
                END AS [Has53ISOWeeks]
         FROM [CoreDates])
-    INSERT INTO dim.Dates
+    INSERT INTO dbo.[dimDates]
     SELECT DimDates.SK_Date,
            DimDates.Date,
            DimDates.Year,
